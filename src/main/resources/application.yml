@@ -33,3 +33,8 @@ spring:
           connectiontimeout: 5000
           timeout: 3000
           writetimeout: 5000
+
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: 'true'

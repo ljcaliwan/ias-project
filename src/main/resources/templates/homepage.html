@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Home</title>
+</head>
+<body>
+  <div th:replace="fragments/header :: header"> </div>
+    <div class="bg-white shadow">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="flex h-16 items-center justify-between">
+          <div class="max-w-7xl py-6 px-4 sm:px-6 lg:px-8">
+            <h1 class="text-3xl font-bold tracking-tight text-gray-900">List of Students</h1>
+          </div>
+          <div class="flex items-end">
+            <a th:href="@{/student/new}" class="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2">new student</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <main>
+      <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+
+        <!-- Success Alert -->
+        <div th:if="${message != null}" class="flex p-4 mb-4 text-sm text-green-700 border border-green-300 rounded-lg bg-green-50 dark:bg-white-800 dark:text-green-400 dark:border-green-800" role="alert">
+          <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+          <span class="sr-only">Info</span>
+          <div>
+            <span class="font-medium">Success</span> [[${message}]]
+          </div>
+        </div>
+
+        <!-- Danger alert -->
+        <div th:if="${errorMessage != null}" class="flex p-4 mb-4 text-sm text-red-700 border border-red-300 rounded-lg bg-red-50 dark:bg-white-800 dark:text-red-400 dark:border-red-800" role="alert">
+          <svg aria-hidden="true" class="flex-shrink-0 inline w-5 h-5 mr-3" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+          <span class="sr-only">Info</span>
+          <div>
+            <span class="font-medium">Error</span> [[${errorMessage}]]
+          </div>
+        </div>
+
+        <div th:if="${students.size() > 0}" class="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-white-700 dark:text-gray-400">
+            <tr>
+              <th scope="col" class="px-6 py-3">
+                Id
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Full Name
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Email
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Date of Birth
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Age
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Address
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Action
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="student : ${students}" class="bg-white border-b dark:bg-white-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+              <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-gray">
+                [[${student.id}]]
+              </th>
+              <td class="px-6 py-4">
+                [[${student.fullName}]]
+              </td>
+              <td class="px-6 py-4">
+                [[${student.email}]]
+              </td>
+              <td class="px-6 py-4">
+                <a th:text="${#temporals.format(student.dob, 'yyyy/MM/dd')}"></a>
+              </td>
+              <td class="px-6 py-4">
+                [[${student.age}]]
+              </td>
+              <td class="px-6 py-4">
+                [[${student.address}]]
+              </td>
+              <td class="px-6 py-4">
+                <a th:href="@{'/students/' + ${student.id}}" title="Edit Student" class="font-medium text-blue-600 dark:text-blue-500 hover:underline mr-6">Edit</a>
+                <a method="delete" th:href="@{'/students/delete/' + ${student.id}}" title="Delete Student" th:studentFullName="${student.fullName}" class="font-medium text-red-600 dark:text-red-500 hover:underline">Remove</a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </main>
+
+  <script src="https://unpkg.com/flowbite@1.6.0/dist/flowbite.min.js"></script>
+
+</body>
+</html>

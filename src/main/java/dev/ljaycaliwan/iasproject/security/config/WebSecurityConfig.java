@@ -21,15 +21,21 @@ public class WebSecurityConfig{
 
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http.csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/api/v*/registration/**")
+                .antMatchers("/api/v*/registration/**", "/students/save/**", "/sign-up/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
-                .formLogin();
+                .formLogin()
+                .loginPage("/login").defaultSuccessUrl("/students", true)
+                .and()
+                .logout()
+                .logoutSuccessUrl("/login")
+                .permitAll();
 
         http.authenticationProvider(daoAuthenticationProvider());
 
